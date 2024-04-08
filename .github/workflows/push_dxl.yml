@@ -20,16 +20,20 @@ jobs:
         php-version: '8.1' # 根据您的需求调整 PHP 版本
         
     - name: Get DXL Image
-      run: php dxl.php > dxl.jpg
+      run: |
+          php dxl.php > dxl.jpg
+          ls
 
     - name: Get Current Date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       
-    - name: Push DXL to Telegram
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "#今日单向历  ${{ steps.date.outputs.date }}\n\n${{ steps.image.outputs.image_url }}"
-        parse_mode: markdown
+    - name: Upload DXL Image to Telegram
+      run: |
+        curl -X POST \
+          -H 'Content-Type: multipart/form-data' \
+          -F "photo=@dxl.jpg" \
+          -F "chat_id=${{ secrets.TELEGRAM_TO }}" \
+          -F "caption=#今日单向历 ${{ steps.date.outputs.date }}" \
+          -F "parse_mode=markdown" \
+          https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendPhoto
