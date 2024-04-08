@@ -21,6 +21,10 @@ jobs:
         
     - name: Get DXL Image
       run: php dxl.php > dxl.jpg
+
+    - name: Get Current Date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       
     - name: Push DXL to Telegram
       uses: appleboy/telegram-action@master
@@ -28,4 +32,4 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         photo: dxl.jpg
-        message: "今日单向历 $(date +'%Y-%m-%d')"
+        message: "#今日单向历 ${{ steps.date.outputs.date }}"
