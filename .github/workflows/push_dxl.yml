@@ -1,0 +1,30 @@
+name: Push Daily Single Image Calendar
+
+on:
+  schedule:
+    - cron: '2 16 * * *' # 每天北京时间 0:02 运行 (根据您的需求调整时间)
+
+jobs:
+
+  push_dxl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1' # 根据您的需求调整 PHP 版本
+        
+    - name: Get DXL Image
+      run: php dxl.php > dxl.jpg
+      
+    - name: Push DXL to Telegram
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        photo: dxl.jpg
+        message: "今日单向历 $(date +'%Y-%m-%d')"
