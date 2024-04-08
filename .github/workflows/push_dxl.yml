@@ -31,5 +31,5 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        photo: dxl.jpg
-        message: "#今日单向历 ${{ steps.date.outputs.date }}"
+        message: "#今日单向历  ${{ steps.date.outputs.date }}\n\n${{ steps.image.outputs.image_url }}"
+        parse_mode: markdown
