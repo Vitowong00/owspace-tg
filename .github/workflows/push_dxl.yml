@@ -2,7 +2,7 @@ name: Push Daily Single Image Calendar
 
 on:
   schedule:
-    - cron: '50 02 * * *' 
+    - cron: '30 00 * * *' #北京时间早上八点半
   workflow_dispatch: # 允许手动触发
 
 jobs:
